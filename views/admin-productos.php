@@ -1,6 +1,6 @@
 <?php 
   session_start();
-  if(!$_SESSION || !$_SESSION['email']){
+  if(!$_SESSION || !$_SESSION['email'] || $_SESSION['rol'] != 'admin'){
     header("Location: ./sing-in.php");
   }
 
@@ -14,17 +14,11 @@
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
-      <title>Home</title>
+      <title>Adminnistrador de Productos</title>
   </head>
   <body>
-    <a href="profile.php" class="  ">Perfil</a>
-    <?php
-      if($_SESSION['rol']=='admin'){
-        echo '<a href="admin-usuarios.php" class="  ">admin de usuarios</a>';
-        echo '<a href="admin-productos.php" class="  ">admin de productos</a';
-      }
-    ?>
-    <h1 class="mb-4 text-4xl text-center font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl" >Welcome Home</h1>
+    <a href="profile.php">Perfil</a>
+    <h1 class="mb-4 text-4xl text-center font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl" >Administrador de Productos</h1>
     <div class="mt-10  mx-4 max-w-7xl">
       <div class="relative overflow-x-auto">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">

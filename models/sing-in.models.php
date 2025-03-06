@@ -23,6 +23,7 @@
   $_SESSION['nombre'] = $fila['nombre'];
   $_SESSION['apellido'] = $fila['apellido'];
 
-  echo "Bienvendio";
+  echo "<p class='text-center text-red-500 text-2xl'>Bienvendio</p>";
+  header("Location: ./home.php");
   $conn->close();
 ?>

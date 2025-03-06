@@ -1,11 +1,11 @@
 <?php 
   session_start();
-  if(!$_SESSION || !$_SESSION['email']){
+  if(!$_SESSION || !$_SESSION['email'] || $_SESSION['rol'] != 'admin'){
     header("Location: ./sing-in.php");
   }
 
   require_once "./../models/home.models.php";
-  $result = viewProducts('productos');
+  $result = viewProducts('usuarios');
 ?>
 
 <!DOCTYPE html>
@@ -14,39 +14,39 @@
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
-      <title>Home</title>
+      <title>Administracion de Usuarios</title>
   </head>
   <body>
-    <a href="profile.php" class="  ">Perfil</a>
-    <?php
-      if($_SESSION['rol']=='admin'){
-        echo '<a href="admin-usuarios.php" class="  ">admin de usuarios</a>';
-        echo '<a href="admin-productos.php" class="  ">admin de productos</a';
-      }
-    ?>
-    <h1 class="mb-4 text-4xl text-center font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl" >Welcome Home</h1>
+    <a href="profile.php">Perfil</a>
+    <h1 class="mb-4 text-4xl text-center font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl" >Administracion de Usuarios</h1>
     <div class="mt-10  mx-4 max-w-7xl">
       <div class="relative overflow-x-auto">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                     <th scope="col" class="px-6 py-3">
-                        ID del producto
+                        ID de Usuario
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        Nombre del producto
+                        Nombre
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        Imagen del producto
+                        Apellido
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        Precio
+                        Email
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        Cantiddad en stock
+                        Fecha de creacion
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        Descripcion
+                        Fecha de Actualizacion
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Editar
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Borrar
                     </th>
                 </tr>
             </thead>
@@ -62,21 +62,23 @@
                         <?php echo $row['nombre'] ?>
                       </th>
                       <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        <?php 
-                        $img_dir = $row['imagen_producto']; 
-                        echo "<img src='./../$img_dir' alt='imagen' width='100' height='100'>";
-                        ?>
+                        <?php echo $row['apellido'] ?>
                       </th>
                       <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        <?php echo $row['precio'] ?>
+                        <?php echo $row['email'] ?>
                       </th>
                       <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        <?php echo $row['cantidad_stock'] ?>
+                        <?php echo $row['fecha_creacion'] ?>
                       </th>
                       <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        <?php echo $row['descripcion'] ?>
+                        <?php echo $row['fecha_actualizacion'] ?>
                       </th>
-
+                      <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <button onclick="<?php $_SESSION['id_element'] = $row['ID']?>" href="./edit-user.php" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Editar</button>
+                      </th>
+                      <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                       <button onclick="<?php  deleteElement('usuarios', $row['ID'] )?>" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" >Borrar</button>
+                      </th>
                     <?php
                       }
                     ?>
