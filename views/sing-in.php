@@ -1,8 +1,8 @@
 <?php
-  session_start();
+  /*session_start();
   if($_SESSION && $_SESSION['email']){
     header("Location: ./home.php");
-  }
+  }*/
 ?>
 
 <!DOCTYPE html>

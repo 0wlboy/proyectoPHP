@@ -1,9 +1,9 @@
 <?php 
-  session_start();
+  /*session_start();
   if(!$_SESSION || !$_SESSION['email']){
-    header("Location: ./sing-in.php");
+    header("Location: ./sing-in.php");*/
     
-    require_once './../models/home.models.php';
+    require_once './../models/show.models.php';
     $result = viewSingleElement('usuarios', $_SESSION['ID']);
     $row = mysqli_fetch_assoc($result);
 

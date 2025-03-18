@@ -1,24 +1,25 @@
-<?php 
-  session_start();
-  /*if(!$_SESSION || !$_SESSION['email'] || $_SESSION['rol'] != 'admin'){
-    header("Location: ./sing-in.php");
-  }*/
+<?php
 
-  require_once "./../models/show.models.php";
-  $result = viewProducts('productos');
+session_start();
+/*if(!$_SESSION && !$_SESSION['email']){
+  header("Location: ./sing-in.php");
+}*/
+
+require_once './../models/show.models.php';
+    $result = viewSingleElement('productos', $_SESSION['id_element']);
+    $row = mysqli_fetch_assoc($result);
+
 ?>
 
-<!DOCTYPE html>
 <html lang="en">
-  <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
-      <title>Adminnistrador de Productos</title>
-  </head>
-  <body class="bg-gray-100 dark:bg-gray-900">
-
-  <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-600 rounded-lg block hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-grey-700 dark:focus:ring-gray-600">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+  <title>Editar Producto</title>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900">
+<button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-600 rounded-lg block hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-grey-700 dark:focus:ring-gray-600">
     <span class="sr-only">Open sidebar</span>
     <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
     <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
@@ -90,88 +91,46 @@
     </div>
   </aside>
 
+  <div class="p-4 sm:ml-64 ">
+    <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 flex flex-col items-center justify-center">
+    <div class="pt-10" >
+    <h1 class="text-3xl text-white font-bold text-center uppercase py-5">Cargar Productos</h1>
+      <form class="bg-blue-950 rounded-lg max-w-sm  mx-auto flex flex-col justify-center p-5 gap-5" method='POST' enctype="multipart/form-data" action="">
+            <div>
+                <label for="nombre" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre de Producto</label>
+                <input type="text" id="nombre" name="nombre" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder=<?php echo $row['nombre']; ?> />
+            </div>
+            <div>
+              <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="imagen_producto">Subir imagen</label>
+              <input name="imagen_producto" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="img_input_help" type="file" placeholder=<?php echo $row['imagen_producto']; ?>>
+              <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="img_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px).</p>
+            </div>
+              <div class="grid gap-6 mb-6 md:grid-cols-2">
+                <div>
+                  <label for="precio" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Precio</label>
+                  <input type="number" id="precio" name="precio" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder=<?php echo $row['precio'];?>  />
+              </div>
+              <div>
+                  <label for="cantidad_stock" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Cantidad en Stock</label>
+                  <input type="number" id="cantidad_stock" name="cantidad_stock" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder=<?php echo $row['cantidad_stock'];?>   />
+              </div>
+            </div>
+              
+            <div>
+                
+              <label for="descripcion" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Descripcion</label>
+              <textarea id="descripcion" name="descripcion" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder=<?php echo $row['descripcion'];?> ></textarea>
 
-    <div class="p-4 sm:ml-64 ">
-      <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 flex flex-col items-center justify-center">
-      <h1 class="mb-4 text-4xl text-center font-extrabold leading-none tracking-tight text-gray-100 md:text-5xl lg:text-6xl" >Administrador de Productos</h1>
-    <div class="mt-10  mx-4 max-w-7xl">
-      <div class="relative overflow-x-auto">
-        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                    <th scope="col" class="px-6 py-3">
-                        ID del producto
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Nombre del producto
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Imagen del producto
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Precio
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Cantiddad en stock
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Descripcion
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Editar
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Borrar
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-                  <?php 
-                    while ($row = mysqli_fetch_assoc($result)){
-                  ?>
-                      <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        <?php echo $row['ID'] ?>
-                      </th>
-                      <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        <?php echo $row['nombre'] ?>
-                      </th>
-                      <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        <?php 
-                        $img_dir = $row['imagen_producto']; 
-                        echo "<img src='./../$img_dir' alt='imagen' width='100' height='100'>";
-                        ?>
-                      </th>
-                      <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        <?php echo $row['precio'] ?>
-                      </th>
-                      <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        <?php echo $row['cantidad_stock'] ?>
-                      </th>
-                      <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        <?php echo $row['descripcion'] ?>
-                      </th>
-                      <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                      <a href="edit-producto.php"><button onclick="<?php $_SESSION['id_element'] = $row['ID']?>"  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Editar</button></a>
-                      </th>
-                      <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                       <button onclick="<?php  /*deleteElement('productos', $row['ID'] )*/?>" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" >Borrar</button>
-                      </th>
-
-                    <?php
-                      }
-                    ?>
-                </tr>
-                </tbody>
-            </table>
-      </div>
+            </div>
+        <button type="submit" name="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+    </form>
+  </div>
     </div>
-      </div>
-    </div>
-    
-   
-
-
-    <a href="./sing-out.php">Sing-out</a>
-  </body>
+  </div>
+</body>
+ 
+  <?php
+    require_once("./../controllers/edit-producto.controller.php");
+  ?>
+</body>
 </html>
